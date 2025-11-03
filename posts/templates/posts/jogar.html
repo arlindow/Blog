@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ jogo.nome }}</title>
+  <style>
+    body { font-family: Arial; background: #000; color: #fff; text-align: center; margin: 0; padding: 20px; }
+    a { color: #0f0; position: absolute; top: 10px; left: 10px; text-decoration: none; }
+    canvas, div { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <a href="/">⬅ Voltar</a>
+  <h1>{{ jogo.nome }}</h1>
+  <div>{{ jogo.descricao }}</div>
+  <hr>
+  {{ jogo.codigo|safe }}
+</body>
+</html>

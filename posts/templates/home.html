@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Desafio do Código</title>
+    <style>
+        body { font-family: Arial; background: #f0f0f0; padding: 20px; }
+        h1 { text-align: center; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 20px; }
+        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>💻 Desafio do Código</h1>
+    <div class="container">
+        {% for jogo in jogos %}
+        <div class="card">
+            <h2>{{ jogo.nome }}</h2>
+            <p>{{ jogo.descricao }}</p>
+            <pre>{{ jogo.codigo }}</pre>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
