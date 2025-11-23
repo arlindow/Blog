@@ -4,6 +4,7 @@ from .models import Jogo
 def home(request):
     jogos = Jogo.objects.all()
     return render(request, 'home.html', {'jogos': jogos})
+
 def lista_jogos(request):
     jogos = Jogo.objects.all()
     return render(request, 'posts/jogos.html', {'jogos': jogos})
