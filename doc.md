@@ -16,6 +16,7 @@ ao clonar
   
 - python inserir_jogos.py 
 
+--------------------------------------------------------------------------------------------
 
 0. Criar pasta do projeto
 
@@ -291,4 +292,6 @@ posts/templates/ home.html
 7. Rodar o servidor
 python manage.py runserver
 
+
+8. python manage.py createsuperuser
 
