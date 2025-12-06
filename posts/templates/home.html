@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <title>Desafio do Código</title>
@@ -8,28 +11,94 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        .oculto {
+    body {
+        padding-top:180px; 
+    }
+    .oculto {
         display: none;
-        }
+    }
+
     </style>
-
-    
-
-
 
 </head>
 
     <script>
+
     function toggleCodigo(id) {
     const bloco = document.getElementById('codigo-' + id);
     bloco.style.display = bloco.style.display === "block" ? "none" : "block";
     }
     </script>
 
-<body class="bg-light">
+<body class="bg-dark">
 
-    <div class="container py-5">
-        <h1 class="text-center mb-4">💻 Desafio do Código</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light    fixed-top shadow-sm">
+  <div class="container">
+
+    <!-- LOGO -->
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+      <img src="{% static 'img/logo.jpeg' %}" alt="Logo" width="90" class="me-2 rounded-circle">
+
+      <span>Desafio do Código</span>
+    </a>
+
+    <!-- Botão hambúrguer -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Itens colapsáveis -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <ul class="navbar-nav ms-auto">
+
+        <!-- Links normais -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Início</a>
+        </li>
+
+        <li class="nav-item">
+    <a class="nav-link" href="#" onclick="alert('🚧 Loja em construção! Em breve novidades!'); return false;">
+        Loja
+    </a>
+    </li>
+
+        <!-- DROPDOWN -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button" data-bs-toggle="dropdown">
+            lista de Jogos
+          </a>
+
+          <ul class="dropdown-menu">
+
+            {% for jogo in jogos %}
+        <li>
+        <a class="dropdown-item" href="{% url 'jogar' jogo.id %}">
+            {{ jogo.nome }}
+        </a>
+        </li>
+        {% endfor %}
+
+        </ul>
+        </li>
+
+        <!-- Formulário de busca -->
+        <form class="d-flex ms-3" method="GET" action="">
+          <input class="form-control me-2" type="search" placeholder="Buscar..." name="q">
+          <button class="btn btn-outline-primary" type="submit">Buscar</button>
+        </form>
+
+        <!-- LOGIN -->
+        <li class="nav-item ms-3">
+          <a class="btn btn-primary" href="">Login</a>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
 
         <!-- Grid -->
         <div class="row g-4 justify-content-center">
