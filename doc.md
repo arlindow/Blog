@@ -11,10 +11,14 @@ ao clonar
 - Migrar o banco de dados
 
   Execute no terminal (na pasta do projeto, onde está manage.py):
-  python manage.py makemigrations
+  
   python manage.py migrate
   
 - python inserir_jogos.py 
+
+Rodar o servidor
+python manage.py runserver
+
 
 --------------------------------------------------------------------------------------------
 
