@@ -43,7 +43,10 @@ pip install django
 No terminal, na pasta onde está o arquivo **manage.py**, execute:
 
 ```bash
+
+python manage.py makemigrations posts
 python manage.py migrate
+
 ```
 
 ---
