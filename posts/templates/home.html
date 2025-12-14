@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-
 <html lang="pt-br">
 {% load static %}
-
 <head>
     <meta charset="UTF-8">
     <title>Desafio do Código</title>
@@ -11,185 +9,195 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        body {
+            padding-top: 180px;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        .card {
+            min-height: 300px;
+        }
+
+        .card pre {
+            max-height: 90px;
+            overflow-y: auto;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 991px) {
+
+    .mobile-navbar {
+        position: static; /* remove fixed no mobile */
+    }
+
     body {
-        padding-top:180px; 
+        padding-top: 0; /* não precisa mais */
     }
-    .oculto {
-        display: none;
-    }
+
+}
 
     </style>
 
+    <script>
+        function toggleCodigo(id) {
+            const bloco = document.getElementById('codigo-' + id);
+            bloco.classList.toggle('oculto');
+        }
+    </script>
 </head>
 
-    <script>
+<body class="bg-dark d-flex flex-column min-vh-100">
 
-    function toggleCodigo(id) {
-    const bloco = document.getElementById('codigo-' + id);
-    bloco.style.display = bloco.style.display === "block" ? "none" : "block";
-    }
-    </script>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg fixed-top mobile-navbar shadow-sm" style="background-color: #9ba4f3ff;">
+    <div class="container">
 
-<body class="bg-dark">
-
-    <nav class="navbar navbar-expand-lg fixed-top shadow-sm" style="background-color: #9ba4f3ff;">
-  <div class="container">
-
-    <!-- LOGO -->
-    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-      <img src="{% static 'img/logo.jpeg' %}" alt="Logo" width="90" class="me-2 rounded-circle">
-
-      <span>Desafio do Código</span>
-    </a>
-
-    <!-- Botão hambúrguer -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Itens colapsáveis -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-
-      <ul class="navbar-nav ms-auto">
-
-        <!-- Links normais -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Início</a>
-        </li>
-
-        <li class="nav-item">
-    <a class="nav-link" href="#" onclick="alert('🚧 Loja em construção! Em breve novidades!'); return false;">
-        Loja
-    </a>
-    </li>
-
-        <!-- DROPDOWN -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button" data-bs-toggle="dropdown">
-            lista de Jogos
-          </a>
-
-          <ul class="dropdown-menu">
-
-            {% for jogo in jogos %}
-        <li>
-        <a class="dropdown-item" href="{% url 'jogar' jogo.id %}">
-            {{ jogo.nome }}
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.jpeg' %}" width="90" class="me-2 rounded-circle">
+            <span>Desafio do Código</span>
         </a>
-        </li>
-        {% endfor %}
 
-        </ul>
-        </li>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <!-- Formulário de busca -->
-        <form class="d-flex ms-3" method="GET" action="">
-          <input class="form-control me-2" type="search" placeholder="Buscar..." name="q">
-          <button class="btn btn-outline-primary" type="submit">Buscar</button>
-        </form>
+        <div class="collapse navbar-collapse" id="navbarNav">
 
-        <!-- LOGIN -->
-        <li class="nav-item ms-3">
-          <a class="btn btn-primary" href="">Login</a>
-        </li>
+            <ul class="navbar-nav ms-auto align-items-center">
 
-      </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Início</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="alert('🚧 Loja em construção!'); return false;">
+                        Loja
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        Lista de Jogos
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        {% for jogo in jogos %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'jogar' jogo.id %}">
+                                {{ jogo.nome }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <form class="d-flex ms-3" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="Buscar..." name="q">
+                    <button class="btn btn-outline-primary">Buscar</button>
+                </form>
+
+                <li class="nav-item ms-3">
+                    <a class="btn btn-primary">Login</a>
+                </li>
+
+            </ul>
+        </div>
     </div>
-
-  </div>
 </nav>
 
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="flex-fill">
+    <div class="container my-5">
 
-        <!-- Grid -->
         <div class="row g-4 justify-content-center">
             {% for jogo in jogos %}
             <div class="col-sm-6 col-md-4 col-lg-3">
 
-                <div class="card h-100 shadow-sm">
+                <div class="card shadow-sm h-100 d-flex flex-column">
 
                     <div class="card-body">
                         <h5 class="card-title">{{ jogo.nome }}</h5>
-                        <p class="card-text">{{ jogo.descricao }}</p>
 
+                        <p class="card-text" style="min-height: 3em;">
+                            {{ jogo.descricao|truncatechars:90 }}
+                        </p>
 
-                        <!-- Área oculta -->
-                        <div id="codigo-{{ jogo.id }}" class="codigo oculto">
-                        <pre>{{ jogo.codigo }}</pre>
+                        <div id="codigo-{{ jogo.id }}" class="oculto mt-2">
+                            <pre>{{ jogo.codigo }}</pre>
                         </div>
-                        
                     </div>
 
-                    <div class="card-footer d-flex justify-content-between align-items-center">
+                    <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
 
                         <div class="d-flex gap-2">
+                            <a href="{% url 'jogar' jogo.id %}" class="btn btn-primary btn-sm">
+                                Jogar
+                            </a>
 
-                        <a href="{% url 'jogar' jogo.id %}" class="btn btn-primary btn-sm">Jogar</a>
-
-                        <button class="btn btn-outline-secondary btn-sm"
-                        onclick="toggleCodigo('{{ jogo.id }}')">
-                        Código
-                        </button>
-                        
-                        <!-- Botão de comentar ( % url 'comentar' jogo.id %) -->
-                        <a href="{% url 'comentar' jogo.id %}" class="btn btn-outline-primary btn-sm">
-                        💬</a>
-
-                        <!-- Botão de curtir  ({{ jogo.curtidas }})-->
-                        <button class="btn btn-outline-secondary btn-sm">
-                        ❤️ <span>{{ jogo.total_curtidas }}</span>
-                        </button>
-
+                            <button class="btn btn-outline-secondary btn-sm"
+                                    onclick="toggleCodigo('{{ jogo.id }}')">
+                                Código
+                            </button>
                         </div>
-                        
-                        
+
+                        <div class="d-flex gap-2 align-items-center">
+                            <a href="{% url 'comentar' jogo.id %}" class="btn btn-outline-primary btn-sm">
+                                💬
+                            </a>
+
+                            <button class="btn btn-outline-secondary btn-sm">
+                                ❤️ <span>{{ jogo.total_curtidas }}</span>
+                            </button>
+                        </div>
 
                     </div>
 
-                    
-
                 </div>
-
             </div>
             {% endfor %}
         </div>
 
     </div>
+</main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <footer class="text-black mt-5" style="background-color: #9ba4f3ff;">
-    
+<!-- FOOTER -->
+<footer class="text-black mt-auto" style="background-color: #9ba4f3ff;">
     <div class="container py-4">
         <div class="row">
 
-            <!-- Logo -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-3">
                 <h5 class="fw-bold">Desafio do Código</h5>
                 <p>Construindo conhecimento com tecnologia e excelência.</p>
             </div>
 
-            <!-- Links do menu -->
-            <div class="col-md-4 mb-4">
-                <h5 class="fw-bold">Redes Sociais</h5> 
-                <ul class="list-unstyled">
-                    <a href="https://wa.me/5587981098703" target="_blank"><img src="{% static 'img/zap.png' %}" alt="whatzapp" width="40" height="40"><a/>
-                        
-                    <a href="https://instagram.com/desafio_do_codigo" target="_blank"><img src="{% static 'img/instagram.png' %}" alt="Instagram" width="40" height="40"></a>
-                        
-                    <a href="https://linkedin.com/in/arlindo-wilson-" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="linkedin" width="40" height="40"></a>
-                </ul>
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">Redes Sociais</h5>
+                <a href="https://wa.me/5587981098703" target="_blank">
+                    <img src="{% static 'img/zap.png' %}" width="40">
+                </a>
+                <a href="https://instagram.com/desafio_do_codigo" target="_blank">
+                    <img src="{% static 'img/instagram.png' %}" width="40">
+                </a>
+                <a href="https://linkedin.com/in/arlindo-wilson-" target="_blank">
+                    <img src="{% static 'img/linkedin.png' %}" width="40">
+                </a>
             </div>
 
-            <!-- Contato -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-3">
                 <h5 class="fw-bold">Contato</h5>
                 <p>Email: arlindowilsonaws@gmail.com</p>
-                <p>Instagram: @desafio_do_codigo
+                <p>Instagram: @desafio_do_codigo</p>
             </div>
 
         </div>
     </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
