@@ -1,0 +1,8 @@
+<h3>Comentar em {{ jogo.nome }}</h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="texto" class="form-control" rows="4"></textarea>
+    <button class="btn btn-primary mt-2">Enviar</button>
+</form>
+

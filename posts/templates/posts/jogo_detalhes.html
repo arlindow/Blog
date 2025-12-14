@@ -1,0 +1,16 @@
+<h2>{{ jogo.nome }}</h2>
+<p>{{ jogo.descricao }}</p>
+
+<pre>{{ jogo.codigo }}</pre>
+
+<hr>
+
+<h4>Comentários</h4>
+
+{% for c in comentarios %}
+<p><b>{{ c.usuario.username }}:</b> {{ c.texto }}</p>
+{% empty %}
+<p>Nenhum comentário ainda.</p>
+{% endfor %}
+
+<a class="btn btn-primary" href="{% url 'comentar' jogo.id %}">Comentar</a>
