@@ -17,7 +17,7 @@ def detalhes_jogo(request, jogo_id):
     if request.user.is_authenticated:
         curtido = Curtida.objects.filter(jogo=jogo, usuario=request.user).exists()
 
-    return render(request, "jogo_detalhes.html", {
+    return render(request, "posts/jogo_detalhes.html", {
         "jogo": jogo,
         "comentarios": comentarios,
         "curtido": curtido,

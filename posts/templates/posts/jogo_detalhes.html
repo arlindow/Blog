@@ -13,4 +13,9 @@
 <p>Nenhum comentário ainda.</p>
 {% endfor %}
 
-<a class="btn btn-primary" href="{% url 'comentar' jogo.id %}">Comentar</a>
+
+<div class="d-flex gap-2">
+    <a class="btn btn-primary" href="{% url 'comentar' jogo.id %}">Comentar</a>
+    <br><br>
+    <a class="btn btn-secondary" href="{% url 'home' %}">home</a>
+</div>
