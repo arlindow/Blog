@@ -42,15 +42,15 @@ def comentar(request, jogo_id):
     jogo = get_object_or_404(Jogo, id=jogo_id)
 
     if request.method == "POST":
-        texto = request.POST.get("texto")
+        texto = request.POST.get("comentario")
         Comentario.objects.create(
             jogo=jogo,
             usuario=request.user,
             texto=texto
         )
-        return redirect("detalhes_jogo", jogo_id=jogo.id)
+        return redirect("jogo_detalhes", jogo_id=jogo.id)
 
-    return render(request, "comentar.html", {"jogo": jogo})
+    return render(request, "posts/comentar.html", {"jogo": jogo})
 
 def login_view(request):
     if request.method == "POST":

@@ -1,8 +1,20 @@
-<h3>Comentar em {{ jogo.nome }}</h3>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Comentar {{ jogo.nome }}</title>
+</head>
+<body>
 
-<form method="POST">
-    {% csrf_token %}
-    <textarea name="texto" class="form-control" rows="4"></textarea>
-    <button class="btn btn-primary mt-2">Enviar</button>
+<a href="{% url 'detalhes_jogo' jogo.id %}">⬅ Voltar</a>
+
+<h1>Comentar: {{ jogo.nome }}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <textarea name="comentario" rows="4" cols="40"></textarea><br><br>
+  <button type="submit">Enviar comentário</button>
 </form>
 
+</body>
+</html>
