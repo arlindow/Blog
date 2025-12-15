@@ -32,10 +32,10 @@ def curtir(request, jogo_id):
         jogo=jogo
     )
 
-    if not created:  
-        curtida.delete()  # descurtir
+    if not created:
+        curtida.delete()
 
-    return redirect("home")
+    return redirect(request.META.get("HTTP_REFERER", "home"))
 
 @login_required
 def comentar(request, jogo_id):

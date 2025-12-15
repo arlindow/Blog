@@ -148,9 +148,12 @@
                                 💬
                             </a>
 
-                            <button class="btn btn-outline-secondary btn-sm">
-                                ❤️ <span>{{ jogo.total_curtidas }}</span>
+                            <form action="{% url 'curtir' jogo.id %}" method="post" class="d-inline">
+                              {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                             ❤️ {{ jogo.total_curtidas }}
                             </button>
+                            </form>
                         </div>
 
                     </div>

@@ -26,6 +26,8 @@ class Jogo(models.Model):
     def __str__(self):
         return self.nome
     
+    def total_curtidas(self):
+        return self.curtida_set.count()
 
 class Comentario(models.Model):
     jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE)
