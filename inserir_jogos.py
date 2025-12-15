@@ -124,22 +124,56 @@ document.querySelector('button').onclick=()=>{
 </script>"""
     },
     {
-        "nome": "🏎️ Jogo de Desvio",
-        "descricao": "Desvie dos obstáculos o máximo que puder.",
-        "codigo": """<canvas id='race' width='300' height='300'></canvas>
+    "nome": "🏎️ Jogo de Desvio",
+    "descricao": "Desvie dos obstáculos o máximo que puder.",
+    "codigo": """<canvas id='race' width='300' height='300' style='border:1px solid #fff'></canvas>
 <script>
-const c=document.getElementById('race'),x=c.getContext('2d');
-let p=150,o=0;
-document.onmousemove=e=>p=e.offsetX;
+const c=document.getElementById('race'),
+      x=c.getContext('2d');
+
+let p=150, ox=Math.random()*280, oy=0, s=3, over=false;
+
+c.addEventListener('mousemove',e=>{
+  const r=c.getBoundingClientRect();
+  p=e.clientX-r.left;
+});
+
 function g(){
- x.clearRect(0,0,300,300);
- x.fillRect(p-15,260,30,30);
- x.fillRect(o,0,20,20);
- o+=2;if(o>300)o=Math.random()*280;
+  if(over) return;
+
+  x.clearRect(0,0,300,300);
+
+  
+  x.fillStyle='lime';
+  x.fillRect(p-15,260,30,30);
+
+  
+  x.fillStyle='red';
+  x.fillRect(ox,oy,20,20);
+
+  oy+=s;
+
+  if(oy>300){
+    oy=0;
+    ox=Math.random()*280;
+  }
+
+  
+  if(
+    oy+20>=260 &&
+    ox<p+15 &&
+    ox+20>p-15
+  ){
+    over=true;
+    x.fillStyle='white';
+    x.font='20px Arial';
+    x.fillText('GAME OVER',80,150);
+  }
 }
+
 setInterval(g,30);
 </script>"""
-    },
+},
     {
         "nome": "🔢 Jogo de Adivinhação",
         "descricao": "Tente adivinhar o número secreto.",
