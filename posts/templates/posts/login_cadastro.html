@@ -1,46 +1,162 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login e Cadastro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <!-- Login Form -->
-            <div class="col-md-6">
-                <h2>Login</h2>
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" name="login" class="btn btn-primary">Entrar</button>
-                </form>
-            </div>
+  <meta charset="UTF-8">
+  <title>Login | Cadastro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <!-- Cadastro Form -->
-            <div class="col-md-6">
-                <h2>Cadastro</h2>
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ register_form.as_p }}
-                    <div class="mb-3">
-                        <label for="id_foto" class="form-label">Foto de Perfil</label>
-                        <input type="file" class="form-control" id="id_foto" name="foto">
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_bio" class="form-label">Bio</label>
-                        <textarea class="form-control" id="id_bio" name="bio"></textarea>
-                    </div>
-                    <button type="submit" name="register" class="btn btn-success">Cadastrar</button>
-                </form>
+  <!-- MDB CSS -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+    rel="stylesheet"
+  />
+</head>
+
+<body class="bg-dark">
+
+    <a class="btn btn-secondary" href="{% url 'home' %}">home</a>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow-5">
+      <div class="card-body p-4">
+
+        <!-- MENSAGENS -->
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} text-center">
+              {{ message }}
             </div>
+          {% endfor %}
+        {% endif %}
+
+        <!-- NAV PILLS -->
+        <ul class="nav nav-pills nav-justified mb-4" id="authTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a
+              class="nav-link active"
+              id="tab-login"
+              data-mdb-toggle="pill"
+              href="#pane-login"
+              role="tab"
+              aria-controls="pane-login"
+              aria-selected="true"
+            >
+              Login
+            </a>
+          </li>
+
+          <li class="nav-item" role="presentation">
+            <a
+              class="nav-link"
+              id="tab-register"
+              data-mdb-toggle="pill"
+              href="#pane-register"
+              role="tab"
+              aria-controls="pane-register"
+              aria-selected="false"
+            >
+              Cadastrar
+            </a>
+          </li>
+        </ul>
+
+        <!-- TAB CONTENT -->
+        <div class="tab-content" id="authTabsContent">
+
+          <!-- LOGIN -->
+          <div
+            class="tab-pane fade show active"
+            id="pane-login"
+            role="tabpanel"
+            aria-labelledby="tab-login"
+          >
+            <form method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="login">
+
+              <div class="form-outline mb-4" data-mdb-input-init>
+                <input name="username" class="form-control">
+                <label class="form-label">Usuário</label>
+              </div>
+
+              <div class="form-outline mb-4" data-mdb-input-init>
+                <input type="password" name="password" class="form-control">
+                <label class="form-label">Senha</label>
+              </div>
+
+              <button class="btn btn-primary w-100">
+                Entrar
+              </button>
+            </form>
+          </div>
+
+          <!-- CADASTRO -->
+          <div
+            class="tab-pane fade"
+            id="pane-register"
+            role="tabpanel"
+            aria-labelledby="tab-register"
+          >
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" name="register">
+
+              {% if register_form.errors %}
+                <div class="alert alert-danger">
+                  {{ register_form.errors }}
+                </div>
+              {% endif %}
+
+              <div class="form-outline mb-3" data-mdb-input-init>
+                {{ register_form.username }}
+                <label class="form-label">Usuário</label>
+              </div>
+
+              <div class="form-outline mb-3" data-mdb-input-init>
+                {{ register_form.email }}
+                <label class="form-label">Email</label>
+              </div>
+
+              <div class="form-outline mb-3" data-mdb-input-init>
+                {{ register_form.password }}
+                <label class="form-label">Senha</label>
+              </div>
+
+              <div class="form-outline mb-3" data-mdb-input-init>
+                {{ register_form.password2 }}
+                <label class="form-label">Confirmar senha</label>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Foto</label>
+                {{ register_form.foto }}
+              </div>
+
+              <div class="form-outline mb-4" data-mdb-input-init>
+                {{ register_form.bio }}
+                <label class="form-label">Bio</label>
+              </div>
+
+              <button class="btn btn-success w-100">
+                Cadastrar
+              </button>
+            </form>
+          </div>
+
         </div>
+
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </div>
+</div>
+
+<!-- MDB JS (OBRIGATÓRIO) -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js">
+</script>
+
 </body>
 </html>

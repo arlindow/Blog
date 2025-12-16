@@ -57,18 +57,46 @@ def comentar(request, jogo_id):
 
     return render(request, "posts/comentar.html", {"jogo": jogo})
 
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect("home")
-    else:
-        form = AuthenticationForm()
-    return render(request, "posts/login.html", {"form": form})
+def login_cadastro_view(request):
+    login_form = AuthenticationForm()
+    register_form = RegisterForm()
 
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        # LOGIN
+        if action == "login":
+            login_form = AuthenticationForm(request, data=request.POST)
+            if login_form.is_valid():
+                user = login_form.get_user()
+                login(request, user)
+                messages.success(request, "Login realizado com sucesso!")
+                return redirect("home")
+
+        # CADASTRO
+        elif action == "register":
+            register_form = RegisterForm(request.POST, request.FILES)
+            if register_form.is_valid():
+                user = register_form.save()
+
+                # Atualiza o profile criado pelo receiver
+                profile = user.profile
+                profile.bio = register_form.cleaned_data.get("bio")
+                profile.foto = register_form.cleaned_data.get("foto")
+                profile.save()
+
+                login(request, user)
+                messages.success(request, "Cadastro realizado com sucesso! 🎉")
+                return redirect("home")
+
+    return render(
+        request,
+        "login_cadastro.html",
+        {
+            "login_form": login_form,
+            "register_form": register_form,
+        },
+    )
 
 def lista_jogos(request):
     jogos = Jogo.objects.all()
