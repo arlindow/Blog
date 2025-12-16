@@ -8,6 +8,6 @@ urlpatterns = [
     path('jogo/<int:jogo_id>/', views.detalhes_jogo, name="jogo_detalhes"),
     path('jogo/<int:jogo_id>/curtir/', views.curtir, name="curtir"),
     path('jogo/<int:jogo_id>/comentar/', views.comentar, name="comentar"),
-    path('login/', views.login_view, name="login"),
+    path('login/', views.login_cadastro_view, name="login"),
 ]
 
