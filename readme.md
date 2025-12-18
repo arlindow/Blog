@@ -38,12 +38,13 @@ pip install django
 
 ---
 
-## 🗄️ 3. Migrar o banco de dados
+## 🗄️ 3. Migrar o banco de dados e instalar o pillow
 
 No terminal, na pasta onde está o arquivo **manage.py**, execute:
 
 ```bash
 
+pip install Pillow
 python manage.py makemigrations posts
 python manage.py migrate
 
