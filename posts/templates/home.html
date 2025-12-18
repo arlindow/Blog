@@ -99,10 +99,42 @@
                     <button class="btn btn-outline-primary">Buscar</button>
                 </form>
 
-                <li class="nav-item ms-3">
-                    <a class="btn btn-primary" href="{% url 'login' %} ">Login</a>
-                </li>
 
+
+                <li class="nav-item ms-3">
+
+                {% if user.is_authenticated %}
+
+               <div class="dropdown">
+            <a class="btn btn-primary dropdown-toggle"
+               href="#"
+               role="button"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+               Olá, {{ user.username }}
+           </a>
+
+           <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item" href="{% url 'logout' %}">
+                    Sair
+                </a>
+            </li>
+            </ul>
+        </div>
+
+        {% else %}
+
+       <a class="btn btn-primary" href="{% url 'login' %}">
+           Login
+       </a>
+
+       {% endif %}
+
+   </li>
+
+
+                
             </ul>
         </div>
     </div>

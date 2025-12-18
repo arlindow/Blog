@@ -6,9 +6,15 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm  # Crie esse formulário para o cadastro de usuários
 from .models import Profile
 from django.contrib import messages
+from django.contrib.auth import logout
 
 
 from .models import Jogo, Comentario, Curtida
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Você saiu da sua conta.")
+    return redirect("home")  # ou "login", se preferir
 
 def home(request):
     jogos = Jogo.objects.all()
@@ -58,45 +64,42 @@ def comentar(request, jogo_id):
     return render(request, "posts/comentar.html", {"jogo": jogo})
 
 def login_cadastro_view(request):
-    login_form = AuthenticationForm()
     register_form = RegisterForm()
 
     if request.method == "POST":
-        action = request.POST.get("action")
 
+        # ======================
         # LOGIN
-        if action == "login":
-            login_form = AuthenticationForm(request, data=request.POST)
-            if login_form.is_valid():
-                user = login_form.get_user()
-                login(request, user)
-                messages.success(request, "Login realizado com sucesso!")
-                return redirect("home")
+        # ======================
+        if "login" in request.POST:
+            username = request.POST.get("username")
+            password = request.POST.get("password")
 
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+
+                next_url = request.GET.get("next")
+                return redirect(next_url or "home")
+            else:
+                messages.error(request, "Usuário ou senha inválidos")
+
+        # ======================
         # CADASTRO
-        elif action == "register":
+        # ======================
+        elif "register" in request.POST:
             register_form = RegisterForm(request.POST, request.FILES)
+
             if register_form.is_valid():
-                user = register_form.save()
+                register_form.save()
+                messages.success(request, "Cadastro realizado com sucesso! Faça login.")
+                return redirect("login")
 
-                # Atualiza o profile criado pelo receiver
-                profile = user.profile
-                profile.bio = register_form.cleaned_data.get("bio")
-                profile.foto = register_form.cleaned_data.get("foto")
-                profile.save()
+    return render(request, 'posts/login_cadastro.html', {
+        "register_form": register_form
+    })
 
-                login(request, user)
-                messages.success(request, "Cadastro realizado com sucesso! 🎉")
-                return redirect("home")
-
-    return render(
-        request,
-        "login_cadastro.html",
-        {
-            "login_form": login_form,
-            "register_form": register_form,
-        },
-    )
 
 def lista_jogos(request):
     jogos = Jogo.objects.all()
@@ -106,30 +109,3 @@ def jogar(request, jogo_id):
     jogo = Jogo.objects.get(id=jogo_id)
     return render(request, 'posts/jogar.html', {'jogo': jogo})
 
-def login_cadastro_view(request):
-    # Inicializa ambos os forms, garantindo que sempre existam
-    form = AuthenticationForm()
-    register_form = RegisterForm()
-
-    if request.method == 'POST':
-        # Verifica se veio do botão de login
-        if request.POST.get('action') == 'login':
-            form = AuthenticationForm(request, data=request.POST)
-            if form.is_valid():
-                user = form.get_user()
-                login(request, user)
-                return redirect('home')
-
-        # Verifica se veio do botão de cadastro
-        elif request.POST.get('action') == 'register':
-            register_form = RegisterForm(request.POST, request.FILES)
-            if register_form.is_valid():
-                user = register_form.save()
-                # Cria profile com foto e bio
-                foto = request.FILES.get('foto')
-                bio = request.POST.get('bio')
-                Profile.objects.create(user=user, foto=foto, bio=bio)
-                login(request, user)
-                return redirect('home')
-
-    return render(request, 'posts/login_cadastro.html', {'form': form, 'register_form': register_form})

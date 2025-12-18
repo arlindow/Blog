@@ -9,5 +9,6 @@ urlpatterns = [
     path('jogo/<int:jogo_id>/curtir/', views.curtir, name="curtir"),
     path('jogo/<int:jogo_id>/comentar/', views.comentar, name="comentar"),
     path('login/', views.login_cadastro_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
 ]
 
