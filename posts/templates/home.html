@@ -95,8 +95,16 @@
                 </li>
 
                 <form class="d-flex ms-3" method="GET">
-                    <input class="form-control me-2" type="search" placeholder="Buscar..." name="q">
-                    <button class="btn btn-outline-primary">Buscar</button>
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="Buscar..."
+                        name="q"
+                        value="{{ request.GET.q }}"
+                    >
+                    <button class="btn btn-outline-primary" type="submit">
+                    Buscar
+                    </button>
                 </form>
 
 
@@ -144,58 +152,69 @@
 <main class="flex-fill">
     <div class="container my-5">
 
-        <div class="row g-4 justify-content-center">
-            {% for jogo in jogos %}
-            <div class="col-sm-6 col-md-4 col-lg-3">
+    <div class="row g-4 justify-content-center">
 
-                <div class="card shadow-sm h-100 d-flex flex-column">
+    {% for jogo in jogos %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
 
-                    <div class="card-body">
-                        <h5 class="card-title">{{ jogo.nome }}</h5>
+            <div class="card shadow-sm h-100 d-flex flex-column">
 
-                        <p class="card-text" style="min-height: 3em;">
-                            {{ jogo.descricao|truncatechars:90 }}
-                        </p>
+                <div class="card-body">
+                    <h5 class="card-title">{{ jogo.nome }}</h5>
 
-                        <div id="codigo-{{ jogo.id }}" class="oculto mt-2">
-                            <pre>{{ jogo.codigo }}</pre>
-                        </div>
+                    <p class="card-text" style="min-height: 3em;">
+                        {{ jogo.descricao|truncatechars:90 }}
+                    </p>
+
+                    <div id="codigo-{{ jogo.id }}" class="oculto mt-2">
+                        <pre>{{ jogo.codigo }}</pre>
+                    </div>
+                </div>
+
+                <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'jogar' jogo.id %}" class="btn btn-primary btn-sm">
+                            Jogar
+                        </a>
+
+                        <button class="btn btn-outline-secondary btn-sm"
+                                onclick="toggleCodigo('{{ jogo.id }}')">
+                            Código
+                        </button>
                     </div>
 
-                    <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-2 align-items-center">
+                        <a href="{% url 'comentar' jogo.id %}" class="btn btn-outline-primary btn-sm">
+                            💬
+                        </a>
 
-                        <div class="d-flex gap-2">
-                            <a href="{% url 'jogar' jogo.id %}" class="btn btn-primary btn-sm">
-                                Jogar
-                            </a>
-
-                            <button class="btn btn-outline-secondary btn-sm"
-                                    onclick="toggleCodigo('{{ jogo.id }}')">
-                                Código
-                            </button>
-                        </div>
-
-                        <div class="d-flex gap-2 align-items-center">
-                            <a href="{% url 'comentar' jogo.id %}" class="btn btn-outline-primary btn-sm">
-                                💬
-                            </a>
-
-                            <form action="{% url 'curtir' jogo.id %}" method="post" class="d-inline">
-                              {% csrf_token %}
+                        <form action="{% url 'curtir' jogo.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
                             <button type="submit" class="btn btn-outline-secondary btn-sm">
-                             ❤️ {{ jogo.total_curtidas }}
+                                ❤️ {{ jogo.total_curtidas }}
                             </button>
-                            </form>
-                        </div>
-
+                        </form>
                     </div>
 
                 </div>
             </div>
-            {% endfor %}
         </div>
 
-    </div>
+    {% empty %}
+    
+        {% if buscou %}
+        <div class="col-12 text-center">
+            <p class="text-muted fs-5">
+                Nenhum resultado encontrado para
+                <strong>"{{ busca }}"</strong>
+            </p>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+
 </main>
 
 <!-- FOOTER -->

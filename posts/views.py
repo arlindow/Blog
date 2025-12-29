@@ -7,6 +7,8 @@ from .forms import RegisterForm  # Crie esse formul√°rio para o cadastro de usu√
 from .models import Profile
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.db.models import Q
+
 
 
 from .models import Jogo, Comentario, Curtida
@@ -18,7 +20,25 @@ def logout_view(request):
 
 def home(request):
     jogos = Jogo.objects.all()
-    return render(request, 'home.html', {'jogos': jogos})
+
+    busca = request.GET.get('q', '').strip()
+    buscou = bool(busca)
+
+    if buscou:
+        
+        jogos = jogos.filter(
+            Q(nome__icontains=busca) |
+            Q(descricao__icontains=busca) |
+            Q(comentario__texto__icontains=busca)
+        ).distinct()
+
+    context = {
+        'jogos': jogos,
+        'busca': busca,
+        'buscou': buscou,
+    }
+
+    return render(request, 'home.html', context)
 
 def detalhes_jogo(request, jogo_id):
     jogo = get_object_or_404(Jogo, id=jogo_id)
